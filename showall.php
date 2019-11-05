@@ -42,6 +42,23 @@
 				<strong id="alert"></strong>
 		</div>
 
+		<?php
+			$colors = array();
+
+			$sql = "SELECT color FROM csvdata";
+			$result = mysqli_query($conn, $sql);
+			if ($result->num_rows > 0) {
+				// output data of each row
+				while($row = $result->fetch_assoc()) {
+				    $colors[] = $row['color'];
+				}
+			} else {
+				echo '<script>console.log("0 results");</script>';
+			}
+
+			
+		?>
+
 		<h2>All Data from DB</h2>
 		
 		<div class="table-responsive">
@@ -61,12 +78,19 @@
 			            <th>Rank</th>
 			            <th>Seller Type</th>
 			            <th>Category</th>
+			            <th>Parent ASIN</th>
 			            <th>ASIN</th>		   
 			            <th>Link</th>
 			            <th>Coupon</th>
 			            <th>Size</th>
 			            <th>Features</th>
 			            <th>Color</th>
+			            <th>Navy Blue</th>
+			           	<!-- <?php				           	
+			           		/*for ($i=0; $i < sizeof($colors); $i++) { 
+			           			echo "<th>'".$colors[$i]."'</th>";
+			           		}*/
+			           	?>  -->           			            
 			        </tr>
 			    </thead>
 			    		    
@@ -96,10 +120,11 @@
     <script>
     	$(document).ready(function(){
     		$('#message').hide();
+
 			$('#myTable').DataTable({
 				'ajax':{
 					"url": "getData.php",
-					"dataSrc": ""
+					"dataSrc": "",
 				},	
 				"scrollY": 650,
 				"scrollX": true,
@@ -122,16 +147,21 @@
 					{"data": "rank"},
 					{"data": "seller_type"},
 					{"data": "category"},
+					{"data": "parent_asin"},				
 					{"data": "asin"},					
 					{"data": "link"},		
 					{"data": "coupon"},									
 					{"data": "size"},									
 					{"data": "features"},									
+					{"data": "color"},			
 					{"data": "color"},									
-
 				]
 			});
 		});
+
+		function getImg(data, type, full, meta) {
+	        return '<img src="'+data+'" width="100" />';
+	    }
 
 		function myFunction() {
 		  var x = document.getElementById("myTopnav");
@@ -149,7 +179,7 @@
 
 			if(asin){
 
-				fetch('https://api.keepa.com/product?key=3a2iq6ba7tjnin8ss488tt7c7feir40i4pndjfqtbgnhm478uh652vknqupceo7b&domain=1&asin='+asin, )
+				fetch('https://api.keepa.com/product?key=3a2iq6ba7tjnin8ss488tt7c7feir40i4pndjfqtbgnhm478uh652vknqupceo7b&domain=1&asin='+asin)
 					.then(res => res.json())
 					.then(function(data){						
 						//console.log(data);
@@ -158,12 +188,14 @@
 						var fe = [];
 						var co = [];
 						var img = [];
+						var pasins = [];
 						var asins = [];
 
 						for (var i = 0; i < data.products.length; i++) {
 							console.log(data.products[i]);
 
 							asins.push(data.products[i].asin);
+							pasins.push(data.products[i].parentAsin);						
 							cp.push(data.products[i].coupon);
 							sz.push(data.products[i].size);
 							fe.push(data.products[i].features);
@@ -176,6 +208,7 @@
 						console.log(fe);
 						console.log(co);
 						console.log(img);
+						console.log(pasins);
 
 						console.log(asins);			
 
@@ -185,6 +218,7 @@
 						    features: fe,
 						    colors: co,
 						    images: img,
+						    pasins: pasins,
 						    asins: asins,					   
 						}, function(response) {
 	    					$('#message').show();

@@ -23,6 +23,8 @@
 		#$new_images = explode(",", $images);
 		//print_r($images);
 
+		$pasins = $_POST['pasins'];
+
 		$asins = $_POST['asins'];
 		#$string = $asins;
 		#$new_asins = explode(",", $string);
@@ -50,7 +52,7 @@
 				echo '<br>';	
 				echo '<br>';*/	
 
-				$query = "UPDATE csvdata SET coupon='".$coupons[$i]."', size='".$sizes[$i]."', features='".$final_features.error_reporting(E_ERROR | E_PARSE)."', 
+				$query = "UPDATE csvdata SET parent_asin='".$pasins[$i]."', coupon='".$coupons[$i]."', size='".$sizes[$i]."', features='".$final_features.error_reporting(E_ERROR | E_PARSE)."', 
 					color='".$colors[$i]."', image='".$imgurl.$img[0]."' WHERE asin = '".$asins[$i]."'";
 
 				$store = mysqli_query($conn, $query);
