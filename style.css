@@ -194,7 +194,19 @@ tr:nth-child(even) {
 .modal-dialog{
     overflow-y: initial !important
 }
-.modal-body{
-    height: 250px;
-    overflow-y: auto;
+
+#table-row .none{
+  display: none !important;
+}
+
+label{
+  text-transform: capitalize !important;
+}
+
+a{
+  text-decoration: none !important;
+}
+
+.dataTables_empty{
+  display: none !important;
 }

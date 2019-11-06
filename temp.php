@@ -23,6 +23,11 @@
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
+
+<style type="text/css">
+
+
+</style>
 <body>
 
 	<div class="topnav" id="myTopnav">
@@ -117,83 +122,15 @@
 			            <th>Color</th>
 			           	<?php				           	
 			           		for ($i=0; $i < sizeof($colors); $i++) { 
-			           			echo "<th>".$colors[$i]."</th>";
+			           			echo "<th class='color_head'>".$colors[$i]."</th>";
 			           		}
-			           	?> 
-			           	<th>Flat Sheet Dimensions</th>
-			            <th>Fitted Sheet Dimensions</th>
-			            <th>Pocket Actual Size</th>		   
-			            <th>Pocket Depth Fits Upto</th>
-			            <th>Pillow Case Dimensions</th>
-			            <th>Elastic All Around</th>
-			            <th>100% Polyester</th>
-			            <th>OKEO-TEX Standard</th>
-			            <th>Notes</th>
-			           	
+			           	?> 	
+			         	
+
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<?php
-			    		$sql = "SELECT * FROM csvdata";
-						$result = mysqli_query($conn, $sql);
-						if ($result->num_rows > 0) {
-							// output data of each row
-							while($row = $result->fetch_assoc()) {
-							    echo "<tr class='data-row'>";
-								    echo "<td>".$row['Product_Name']."</td>";
-								    echo "<td>".$row['Brand']."</td>";
-								    echo "<td>".$row['Price']."</td>";
-								    echo "<td>".$row['mo_sales']."</td>";
-								    echo "<td>".$row['d_sales']."</td>";
-								    echo "<td>".$row['mo_revenue']."</td>";
-								    echo "<td>".$row['reviews']."</td>";
-								    echo "<td>".$row['rating']."</td>";
-								    echo "<td>".$row['rank']."</td>";
-								    echo "<td>".$row['seller_type']."</td>";
-								    echo "<td>".$row['category']."</td>";
-								    echo "<td>".$row['parent_asin']."</td>";
-								    echo "<td><a href='".$row['link']."'>".$row['asin']."</a></td>";
-								    echo "<td>".$row['coupon']."</td>";					    
-								    echo "<td>".$row['size']."</td>";							    
-								    echo "<td><a id='".$row['id']."' class='feature_class' >".$row['features']."</a></td>";							    
-								    echo "<td>".$row['color']."</td>";	
-
-								    for ($i=0; $i < sizeof($colors); $i++) { 
-					           			if($row['color'] == $colors[$i]){
-									    	echo "<td><img width='100px' src='".$row['image']."'/></td>";
-									    }else{
-									    	echo '<td></td>';
-									    }					    
-
-				           			}	
-				           			/*$temp = explode (',', $row['feature_details']);
-		 
-									foreach ($temp as $pair) {
-										list ($k, $v) = explode(':', $pair);
-										$pairs[$k] = $v;
-									}
-									print_r($pairs);*/
-									$fd = json_decode($row['feature_details'], true); 
-				           			echo '<td>'.$fd["flat_sheet_dimension"].'</td>';
-				           			echo '<td>'.$fd["fitted_sheet_dimension"].'</td>';
-				           			echo '<td>'.$fd["pocket_depth_actual"].'</td>';
-				           			echo '<td>'.$fd["pocket_depth_fits"].'</td>';
-				           			echo '<td>'.$fd["pillow_case"].'</td>';
-				           			echo '<td>'.$fd["elastic_allaround"].'</td>';	
-				           			echo '<td>'.$fd["polyester"].'</td>';				           			
-				           			echo '<td>'.$fd["okeo_standard"].'</td>';				           			
-				           			echo '<td>'.$fd["notes"].'</td>';				           			
-							    echo "</tr>";			           			
-
-							}
-
-																				
-
-							//echo $res;
-						} else {
-							echo '<script>console.log("0 results");</script>';
-						}
-			    	?>
+			    	
 			    </tbody>
 			    		    
 			</table>
@@ -242,39 +179,39 @@
 		        		<div class="row">
 			        		<div class="form-group col-xs-6">
 			        			<label for="Flat Sheet"><a class="editable">Flat Sheet Dimension (Inches)</a></label>
-			        			<input class="form-control" type="text" id="flat_sheet" required>
+			        			<input name="flat" class="form-control" type="text" id="flat_sheet" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Fitted Sheet"><a class="editable" data-toggle="modal" data-target="#edit_modal">Fitted Sheet Dimension (Inches)</a></label>
-			        			<input class="form-control" type="text" id="fitted_sheet" required>
+			        			<input name="fit" class="form-control" type="text" id="fitted_sheet" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Pocket Actual"><a class="editable" data-toggle="modal" data-target="#edit_modal">Pocket Depth Actual Size (Inches)</a></label>
-			        			<input class="form-control" type="text" id="pocket_actual" required>
+			        			<input name="pocket" class="form-control" type="text" id="pocket_actual" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Pocket Fits"><a class="editable" data-toggle="modal" data-target="#edit_modal">Pocket Depth Fits Upto (Inches)</a></label>
-			        			<input class="form-control" type="text" id="pocket_fits" required>
+			        			<input name="depth" class="form-control" type="text" id="pocket_fits" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Pillow Case"><a class="editable" data-toggle="modal" data-target="#edit_modal">Pillow Case Dimensions (Inches)</a></label>
-			        			<input class="form-control" type="text" id="pillow_case" required>
+			        			<input name="pillow" class="form-control" type="text" id="pillow_case" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Elastic Sheet"><a class="editable" data-toggle="modal" data-target="#edit_modal">Elastic All Around</a></label>
-			        			<input class="form-control" type="text" id="elastic_sheet" required>
+			        			<input name="elastic" class="form-control" type="text" id="elastic_sheet" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Polyester"><a class="editable" data-toggle="modal" data-target="#edit_modal">100% Polyester</a></label>
-			        			<input class="form-control" type="text" id="polyester" required>
+			        			<input name="polyester" class="form-control" type="text" id="polyester" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Standard"><a class="editable" data-toggle="modal" data-target="#edit_modal">OKEO-TEX Standard 100 Factory</a></label>
-			        			<input class="form-control" type="text" id="standard" required>
+			        			<input name="standard" class="form-control" type="text" id="standard" required>
 			        		</div>
 			        		<div class="form-group col-xs-6">
 			        			<label for="Notes" ><a class="editable" data-toggle="modal" data-target="#edit_modal">Notes</a></label><br>
-			        			<textarea class="form-control" id="notes" required></textarea>
+			        			<textarea name="notes" class="form-control" id="notes" required></textarea>
 			        		</div>		
 				        		
 		        		</div>
@@ -295,7 +232,6 @@
 		        	<div class="row">
 			        	<div class="col-xs-3">
 			        		<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-			        		<button id="add_rows" type="button" class="btn btn-default pull-left">Add Row</button>			        		
 			        	</div>
 			        	<div class="form-group col-xs-3 col-xs-offset-6">
 				        	<input class="btn btn-block btn-primary pull-right" type="submit" id="save" value="Save">
@@ -335,48 +271,69 @@
 	
 
     <script>
-    	/*$(document).ready(function(){
-    		$('#message').hide();
-
-			$('#myTable').DataTable({
-				'ajax':{
-					"url": "getData.php",
-					"dataSrc": "",
-				},	
-				"scrollY": 650,
-				"scrollX": true,
-				"columns": [
-					{"data": "id"},
-					{
-						"data": "image", 
-						"render": function(data, type, full, meta){
-							return '<img src="'+data+'" width="100" />';
-						}
-					},									
-					{"data": "Product_Name"},
-					{"data": "Brand"},
-					{"data": "Price"},
-					{"data": "mo_sales"},
-					{"data": "d_sales"},
-					{"data": "mo_revenue"},
-					{"data": "reviews"},
-					{"data": "rating"},
-					{"data": "rank"},
-					{"data": "seller_type"},
-					{"data": "category"},
-					{"data": "parent_asin"},				
-					{"data": "asin"},					
-					{"data": "link"},		
-					{"data": "coupon"},									
-					{"data": "size"},									
-					{"data": "features"},									
-					{"data": "color"},
-				]
-			});
-		});*/
-
+  
 		$(document).ready(function(){
 			$('#message').hide();
+		
+			var colors = [];
+
+			$.ajax({
+				url: "getColors.php",
+				method: 'GET',
+				dataType: 'json',
+				success: function(data){	
+					for (var x in data){
+						if (data.hasOwnProperty(x)){
+							colors.push(data[x]);
+						}
+					}
+					console.log(colors);
+				}
+			});
+
+			$.ajax({
+				url: "gettabledata.php",
+				method: 'GET',
+				dataType: 'json',
+				success: function(data){
+					var tdHtml = '';
+					data.forEach(function (dataItem) {
+						var x = dataItem;
+						tdHtml += '<tr class="data-row">' +
+					        '<td>' + x.Product_Name + '</td>' +
+					        '<td>' + x.Brand + '</td>' +
+					        '<td>' + x.Price + '</td>' +
+					        '<td>' + x.mo_sales + '</td>' +
+					        '<td>' + x.d_sales + '</td>' +
+					        '<td>' + x.mo_revenue + '</td>' +
+					        '<td>' + x.reviews + '</td>' +
+					        '<td>' + x.rating + '</td>' +
+					        '<td>' + x.rank + '</td>' +
+					        '<td>' + x.seller_type + '</td>' +
+					        '<td>' + x.category + '</td>' +
+					        '<td>' + x.parent_asin + '</td>' +
+					        '<td><a href="'+x.link+'">' + x.asin + '</a></td>' +
+					        '<td>' + x.coupon + '</td>' +
+					        '<td>' + x.size + '</td>' +
+					        '<td><a id="'+x.id+'" class="feature_class">' + x.features + '</a></td>' +
+					        '<td>' + x.color + '</td>' ;					
+
+					        for(var i = 0; i < colors.length; i++) {
+					        	if (x.color == colors[i]) {
+					        	tdHtml += '<td><img width="100px" src=' + x.image + ' /></td>';				        	
+						        }else{
+						        	tdHtml += '<td></td>';
+						        }
+					        }
+					     	
+					    tdHtml += '</tr>';
+					});
+
+					$('#demo > tbody').append(tdHtml);
+				}
+			});
+
+
 			$(document).on('click', '.feature_class', function(){
 				$('#modal_msg').hide();
 				var id = $(this).attr('id');
@@ -411,12 +368,9 @@
 				});
 
 				
-
-
-
 				$(document).on('click', '#save', function(e){
 					e.preventDefault();
-					var flat =  $('#flat_sheet').val();
+				/*	var flat =  $('#flat_sheet').val();
 					var fitted =  $('#fitted_sheet').val();
 					var actual =  $('#pocket_actual').val();
 					var fit =  $('#pocket_fits').val();
@@ -424,32 +378,21 @@
 					var elastic =  $('#elastic_sheet').val();
 					var polyester =  $('#polyester').val();
 					var standard =  $('#standard').val();
-					var notes =  $('#notes').val();
+					var notes =  $('#notes').val();*/
 
 					$.ajax({
-						url: "storeFeatures.php",
+						url: "storeFeatures-test.php",
 						method: 'POST',
-						data: {
-							id: id,
-							flat: flat,
-						 	fitted: fitted,					 	
-						 	actual: actual,
-						 	fit: fit,
-						 	pillow: pillow,  
-						 	elastic: elastic, 
-						 	polyester: polyester,
-						 	standard: standard,
-						 	notes: notes
-						},
-						success: function(data, response){
+						data: $('#feature_form').serialize() + "&id="+id,
+						dataType: 'json',						
+						success: function(data){
 							console.log('Data Submitted');
-							console.log(data);
-							/*$('#modal_msg').text(response);
-							$('#modal_msg').show();*/
-							$('form').find("input[type=text], textarea").val("");	
-
+							/*for (var key in data) {
+							    if (data.hasOwnProperty(key)) {
+							        console.log(key + " -> " + data[key]);
+							    }					
+							}*/	
 							$('#myModal').modal('toggle'); 
-    						return false;
 						}
 					});
 				});
@@ -574,6 +517,12 @@
 			}
 
 		}
+
+		/*$(document).ready( function () {
+    		$('#demo').DataTable({
+    			"order": [[ 0, "asc" ]]
+	    	});
+		});*/
 		
 	</script>
 </body>
