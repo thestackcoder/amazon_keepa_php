@@ -43,7 +43,8 @@
 		    <div class="form-group">
 		        <button id="upload_data" name="upload"
 		            class="btn-submit btn btn-default">Upload</button>
-		    </div>	    
+		    </div>	  <br>
+		    <span id="refresh" style="color: silver; display:none;" class="pull-left">Refresh to Upload New File</span>		        		    
 		</div>
 	    <div id="import-btn" class="form-group">
 	    	<button type="submit" id="import" name="import"
@@ -52,6 +53,7 @@
 		
 	    <div id="labelError"></div>
 	</form>
+
 
    <div id="csv_file_data"></div>
 
@@ -97,71 +99,43 @@
 
     <script>
 
-    	/*$(document).ready(function(){
-			$('#data-table').DataTable({
-				'ajax':{
-					"url": "getData.php",
-					"dataSrc": ""
-				},
-				"columns": [
-					{"data": "id"},
-					{"data": "Export_date"},
-					{"data": "Empty"},
-					{"data": "Pound"},
-					{"data": "Product_Name"},
-					{"data": "Brand"},
-					{"data": "Price"},
-					{"data": "mo_sales"},
-					{"data": "d_sales"},
-					{"data": "mo_revenue"},
-					{"data": "reviews"},
-					{"data": "rating"},
-					{"data": "rank"},
-					{"data": "seller_type"},
-					{"data": "category"},
-					{"data": "asin"},					
-					{"data": "link"},									
-				]
-			});
-		});*/
-
-
 		$(document).ready(function(){
 			var form = document.getElementById('upload_csv');
 			$('#upload_data').on('click', function(event){
 				event.preventDefault();
+				$('#refresh').show();
 				  $.ajax({
-				   url:"import_data.php",
-				   method:"POST",
-				   data: new FormData(form),
-				   dataType:'json',
-				   contentType:false,
-				   cache:false,
-				   processData:false,
-				   success:function(jsonData)
-				   {
-				   	//console.log(jsonData);
-				    $('#data-table').DataTable({
-				     data  :  jsonData,
-				     columns :  [
-						{data: "Export date: 10/7/2019, 6:22:21 PM"},
-						{data: "Empty"},
-						{data: "Pound"},
-						{data: "Product_Name"},
-						{data: "Brand"},
-						{data: "Price"},
-						{data: "mo_sales"},
-						{data: "d_sales"},
-						{data: "mo_revenue"},
-						{data: "reviews"},
-						{data: "rating"},
-						{data: "rank"},
-						{data: "seller_type"},
-						{data: "category"},
-						{data: "asin"},					
-						{data: "link"},	
-				     ]
-				    });				 				  
+					   url:"import_data.php",
+					   method:"POST",
+					   data: new FormData(form),
+					   dataType:'json',
+					   contentType:false,
+					   cache:false,
+					   processData:false,
+					   success:function(jsonData)
+					   {
+					   	//console.log(jsonData);
+						    $('#data-table').DataTable({
+						     data  :  jsonData,
+						     columns :  [
+								{data: "Export date: 10/7/2019, 6:22:21 PM"},
+								{data: "Empty"},
+								{data: "Pound"},
+								{data: "Product_Name"},
+								{data: "Brand"},
+								{data: "Price"},
+								{data: "mo_sales"},
+								{data: "d_sales"},
+								{data: "mo_revenue"},
+								{data: "reviews"},
+								{data: "rating"},
+								{data: "rank"},
+								{data: "seller_type"},
+								{data: "category"},
+								{data: "asin"},					
+								{data: "link"},	
+						     ]
+						    });				 				  
 				   }				   
 				});
 			 	//console.log('wow');			 					   				
@@ -178,6 +152,7 @@
 		    x.className = "topnav";
 		  }
 		}
+
 
 	</script>
 </body>

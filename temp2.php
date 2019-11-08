@@ -382,7 +382,7 @@
 
 				},
 				 error: function() {
-			        alert('DataTable, failed to render!');
+			        alert('No data to render!');
 			    }
 			});
 			
@@ -551,67 +551,71 @@
 
 		function sendData(){
 			var asin = "<?php echo $res ?>";
-			console.log(asin);
+			console.log(asin);	
+
+			var sp = asin.split(',');
+			console.log(sp);
+			var count = 22;
 
 			if(asin){
+				alert("Fetching Data from API");				
+				while(sp.length) {
+					var arr = sp.splice(0, count)
+				    //console.log(arr);
+				    var str = arr.toString();
+				    //console.log(str);
 
-				fetch('https://api.keepa.com/product?key=3a2iq6ba7tjnin8ss488tt7c7feir40i4pndjfqtbgnhm478uh652vknqupceo7b&domain=1&asin='+asin)
-					.then(res => res.json())
-					.then(function(data){						
-						//console.log(data);
-						var cp = [];
-						var sz = [];
-						var fe = [];
-						var co = [];
-						var img = [];
-						var pasins = [];
-						var asins = [];
+				    if(str){
+						fetch('https://api.keepa.com/product?key=9b9vdvv8l59t9ccc4a9l8ncajn9bm3ag2ae7h0fogsf9i3ihbpigsa6jrpcme4tb&domain=1&asin='+str)
+							.then(res => res.json())
+							.then(function(data){
+								//console.log(data);
+								var cp = [];
+								var sz = [];
+								var fe = [];
+								var co = [];
+								var img = [];
+								var pasins = [];
+								var asins = [];
 
-						for (var i = 0; i < data.products.length; i++) {
-							console.log(data.products[i]);
+								for (var i = 0; i < data.products.length; i++) {
+									//console.log(data.products[i]);
 
-							asins.push(data.products[i].asin);
-							pasins.push(data.products[i].parentAsin);						
-							cp.push(data.products[i].coupon);
-							sz.push(data.products[i].size);
-							fe.push(data.products[i].features);
-							co.push(data.products[i].color);
-							img.push(data.products[i].imagesCSV);						
-						}
+									asins.push(data.products[i].asin);
+									pasins.push(data.products[i].parentAsin);						
+									cp.push(data.products[i].coupon);
+									sz.push(data.products[i].size);
+									fe.push(data.products[i].features);
+									co.push(data.products[i].color);
+									img.push(data.products[i].imagesCSV);						
+								}		
 
-						console.log(cp);
-						console.log(sz);
-						console.log(fe);
-						console.log(co);
-						console.log(img);
-						console.log(pasins);
-
-						console.log(asins);			
-
-						$.post('testapi.php', {
-							coupons: cp,
-						    sizes: sz,
-						    features: fe,
-						    colors: co,
-						    images: img,
-						    pasins: pasins,
-						    asins: asins,					   
-						}, function(response) {
-	    					//$('#message').show();
-							console.log(response);
-						    $('#alert').text(response);
-						});	
-							
-					})
-					.catch((error) => console.log(error));
+								$.post('testapi.php', {
+									coupons: cp,
+								    sizes: sz,
+								    features: fe,
+								    colors: co,
+								    images: img,
+								    pasins: pasins,
+								    asins: asins,					   
+								}, function(response) {
+			    					//$('#message').show();
+								    $('#alert').text(response);
+								    location.reload();
+								});	
+									
+							})
+							.catch((error) => {
+								console.log(error);
+								alert("Failed to load resources! Fetch again!");
+							});
+					}
+				}
 			}else{
-	    		//$('#message').show();				
 				$('#alert').text("No ASINS Found.");
 			}
 
 		}
-		
-
 		
 	</script>
 </body>
