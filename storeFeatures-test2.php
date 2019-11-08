@@ -30,7 +30,6 @@
 	$data2 = json_encode($_POST['inputs']);
 
 	echo $data;
-	echo $data2;
 
 	//print_r(json_decode($data));
 

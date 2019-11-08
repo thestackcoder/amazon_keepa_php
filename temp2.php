@@ -42,10 +42,10 @@
 	</div>
 
 	<div class="main">
-		<!-- <div id="message" class="alert alert-info alert-dismissible" role="alert">
+		<div id="message" class="alert alert-info alert-dismissible" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<strong id="alert"></strong>
-		</div> -->
+		</div>
 
 		<?php
 			$colors = array();
@@ -69,8 +69,11 @@
 		
 		<div id="data"></div>
 
-		<div style="overflow:scroll;height:700px;width:100%;overflow:auto" class="table-responsive main">
-			<table width="100%" id='demo' class="table table-fixed table-bordered">
+		<div style="overflow:scroll;height:700px;width:100%;overflow:auto; border: 1px solid silver; background-color: #fdfdfd;" class="table-responsive main">
+			<div class="col-md-4 col-lg-4 pull-right">
+				<input class="form-control" id="search" type="text" placeholder="Search..">
+			</div><br>
+			<table style="margin-top: 30px;" width="100%" id='demo' class="table table-fixed table-bordered">
 			    <thead>
 			        <tr id='table-row'>					        		         
 			            <th>Product Name</th>
@@ -88,7 +91,7 @@
 			            <th>ASIN</th>		   
 			            <th>Coupon</th>
 			            <th>Size</th>
-			            <th>Features</th>
+			            <th id="featured">Features</th>
 			            <th>Color</th>
 			           	<?php				           	
 			           		for ($i=0; $i < sizeof($colors); $i++) { 
@@ -99,7 +102,7 @@
 
 			        </tr>
 			    </thead>
-			    <tbody>
+			    <tbody id="table-body">
 			    	
 			    </tbody>
 			    		    
@@ -149,67 +152,7 @@
 		        	<form id="feature_detail_form">
 		        		<div class="row" id="formHead">
 		        			<p class="text-muted col-xs-6">Click on the label to change it. Then Press Enter.</p>
-		        		</div>
-		        		<!-- <div class="row">
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">			        			
-				        			<label for="Flat Sheet"><a class="editable">Flat Sheet Dimension (Inches)</a></label>
-				        			<input name="flat" class="form-control newfields" type="text" id="flat_sheet" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-			        			</div>
-			        		</div>
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">
-				        			<label for="Fitted Sheet"><a class="editable" data-toggle="modal" data-target="#edit_modal">Fitted Sheet Dimension (Inches)</a></label>
-				        			<input name="fit" class="form-control newfields" type="text" id="fitted_sheet" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-			        			</div>
-			        		</div>
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">			        			
-				        			<label for="Pocket Actual"><a class="editable" data-toggle="modal" data-target="#edit_modal">Pocket Depth Actual Size (Inches)</a></label>
-				        			<input name="pocket" class="form-control newfields" type="text" id="pocket_actual" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-			        			</div>
-			        		</div>
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">			        			
-				        			<label for="Pocket Fits"><a class="editable" data-toggle="modal" data-target="#edit_modal">Pocket Depth Fits Upto (Inches)</a></label>
-				        			<input name="depth" class="form-control newfields" type="text" id="pocket_fits" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-			        			</div>
-			        		</div>
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">			        			
-				        			<label for="Pillow Case"><a class="editable" data-toggle="modal" data-target="#edit_modal">Pillow Case Dimensions (Inches)</a></label>
-				        			<input name="pillow" class="form-control newfields" type="text" id="pillow_case" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-				        		</div>
-			        		</div>
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">			        						        		
-				        			<label for="Elastic Sheet"><a class="editable" data-toggle="modal" data-target="#edit_modal">Elastic All Around</a></label>
-				        			<input name="elastic" class="form-control newfields" type="text" id="elastic_sheet" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-			        			</div>
-			        		</div>
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">			        						        			
-				        			<label for="Polyester"><a class="editable" data-toggle="modal" data-target="#edit_modal">100% Polyester</a></label>
-				        			<input name="polyester" class="form-control newfields" type="text" id="polyester" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-			        			</div>
-			        		</div>
-			        		<div class="form-group col-xs-6">
-			        			<div class="input-group">			        						        			
-				        			<label for="Standard"><a class="editable" data-toggle="modal" data-target="#edit_modal">OKEO-TEX Standard 100 Factory</a></label>
-				        			<input name="standard" class="form-control newfields" type="text" id="standard" required>
-				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
-			        			</div>
-			        		</div>
-			        		
-				        		
-		        		</div> -->
+		        		</div>		        	
 		        		<div class="row" id="form_row">			        		
 				        	<!--Dynamic Fields-->
 		        		</div>
@@ -269,11 +212,21 @@
   
 		$(document).ready(function(){
 
-			//$('#message').hide();
+			$('#message').hide();
 
 			var colors = [];
+			var headings = '';
+			var heads = [];
 			var fea;
 			var obj;
+
+			$("#search").on("keyup", function() {
+			    var value = $(this).val().toLowerCase();
+			    $("#table-body tr").filter(function() {
+			      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			    });
+			  });
+
 
 			$.ajax({
 				url: "getColors.php",
@@ -287,6 +240,74 @@
 					}
 				}
 			});
+
+
+			/**/
+			$.ajax({
+					url: "getTableHeadings.php",
+					method: 'POST',
+					dataType: 'json',
+					success: function(data){									
+						headings = '';		
+						heads = data;
+
+						if(data){
+							for(var i = 0; i < data.length; i++){
+								headings += '<th>'+data[i]+'</th>';		
+							}				
+
+							$('#demo > thead > #table-row').append(headings);
+
+							for(var i =0; i < data.length; i++){
+								var inputs = '<div class="form-group col-xs-6">'
+								+'<label for="newfield"><a class="editable" data-toggle="modal" data-target="#edit_modal">'+data[i]+'</a></label>'					
+								+'<input type="text" class="form-control newfields" name="newfield[]" />'						
+								+'</div>';
+
+								$("#form_row").append(
+									inputs
+								);
+							}			
+
+
+						}else{
+							console.log('No data');
+						}
+
+
+					}	
+				});
+
+			/**/
+
+
+			$(document).on('click', '.feature_class', function(){
+				var id = $(this).attr('id');
+				$.ajax({
+					url: "getInputValues.php",
+					method: 'POST',
+					data: {id: id},
+					dataType: 'json',
+					success: function(data){
+						if(data == null){
+							$(".newfields").each(function(index){
+								$(this).val('');
+							});
+						}else{
+							$(".newfields").each(function(index){
+								if($(this).prev().text() == heads[index]){
+									$(this).val(data[index]);								
+								}else{
+									$(this).val('');
+								}
+							});
+						}
+																							
+					}
+				});
+			});
+
+		
 
 			var featuresx = [];
 
@@ -332,80 +353,54 @@
 					        '<td><a href="'+x.link+'">' + x.asin + '</a></td>' +
 					        '<td>' + x.coupon + '</td>' +
 					        '<td>' + x.size + '</td>' +
-					        '<td><a id="'+x.id+'" class="feature_class">' + x.features + '</a></td>' +
+					        '<td><a id="'+x.id+'" class="feature_class">' + x.features + '</a></td>'+
 					        '<td>' + x.color + '</td>';				
 
-					        for(var i = 0; i < colors.length; i++) {
-					        	if (x.color == colors[i]) {
-					        		tdHtml += '<td><img width="100px" src=' + x.image + ' /></td>';				        	
-						        }else{
-						        	tdHtml += '<td></td>';
-						        }
-					        }	
+					        tdHtml += displayColors(x.color, x.image);
+				       		
 
 					        fea = x.feature_details;
 					        obj = JSON.parse(fea);
-					        console.log(obj);
 
-					        if(obj != null){
+					        if(obj != null && headings != null){
 					        	for (var key in obj) {
 								    if (obj.hasOwnProperty(key)) {
 								        tdHtml += '<td>' + obj[key] + '</td>';
 								    }
-								}					        	
-					        }					       
+								}	
+					        }
 
 					        /*for(var i = 0; i < featuresx.length; i++) {
 					        	tdHtml += '<td>'+featuresx[i]+'</td>';				        	
 					        }	*/			        
 
 					    tdHtml += '</tr>';
+
 					});
-
-					$('#demo > tbody').append(tdHtml);
-				}
-			});
-
-			function displayColors(){
-				
-			}
-
-
-			$.ajax({
-				url: "getTableHeadings.php",
-				method: 'POST',
-				dataType: 'json',
-				success: function(data){									
-					//console.log(th);
-
-					var headings = '';
 					
-					if(data){
-						for(var i = 0; i < data.length; i++){
-							headings += '<th>'+data[i]+'</th>';		
-						}				
+					$('#demo > tbody').append(tdHtml);
 
-						$('#demo > thead > #table-row').append(headings);
-
-						for(var i =0; i < data.length; i++){
-							var inputs = '<div class="form-group col-xs-6">'
-							+'<label for="newfield"><a class="editable" data-toggle="modal" data-target="#edit_modal">'+data[i]+'</a></label>'					
-							+'<input type="text" class="form-control newfields" name="newfield[]"  />'						
-							+'</div>';
-
-							$("#form_row").append(
-								inputs
-							);
-						}			
-
-
-					}else{
-						console.log('No data');
-					}
-
-
-				}	
+				},
+				 error: function() {
+			        alert('DataTable, failed to render!');
+			    }
 			});
+			
+
+
+			function displayColors(color, image){
+				var cohtml = '';
+				 for(var i = 0; i < colors.length; i++) {
+					if (color == colors[i]) {
+					    cohtml += '<td><img width="100px" src=' + image + ' /></td>';				        	
+					}else{
+						cohtml += '<td></td>';
+					}
+				}
+
+				return cohtml;
+			}
+			
 
 			// Add field function
 			$(document).on('click', '#add_btn', function(e){
@@ -461,23 +456,7 @@
 						$('#features').val(data.features);
 						$('#myModal').modal('show');
 
-						/*$.ajax({
-							url: "getformdata.php",
-							method: 'POST',
-							data: {id: id},
-							dataType: 'json',
-							success: function(data){
-								var arr = Object.keys(data);
-								$('#feature_detail_form label a').each(function() {									
-									for(var i = 0; i < data.length; i++){
-										$(this).text(arr[i]);										
-									}
-								});
-								$('#feature_detail_form label').each(function() {									
-									$(this).next().val(data[$(this).text()]);
-								});
-							}
-						});*/
+						
 					}
 				});
 
@@ -515,8 +494,9 @@
 						},
 						dataType: 'json',						
 						success: function(data){
-							console.log(data);
-							console.log('Data Submitted');
+							//console.log('Data Submitted');
+							$('#message').text('Data updated Successfully!');
+							$('message').show();
 							/*for (var key in data) {
 							    if (data.hasOwnProperty(key)) {
 							        console.log(key + " -> " + data[key]);
@@ -535,8 +515,8 @@
 						},
 						dataType: 'json',						
 						success: function(data){
-							console.log(data);
-							console.log('Data Submitted');
+							//console.log('Data Submitted');
+							$('#message').text('Data updated Successfully!');
 							/*for (var key in data) {
 							    if (data.hasOwnProperty(key)) {
 							        console.log(key + " -> " + data[key]);
@@ -630,12 +610,8 @@
 			}
 
 		}
+		
 
-		/*$(document).ready( function () {
-    		$('#demo').DataTable({
-    			"order": [[ 0, "asc" ]]
-	    	});
-		});*/
 		
 	</script>
 </body>

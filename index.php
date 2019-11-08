@@ -26,7 +26,7 @@
 
 	<div class="topnav" id="myTopnav">
 	  <a href="#home" class="active">Home</a>
-	  <a href="demo.php" type="submit" name="show">Show All Data</a>
+	  <a href="temp2.php" type="submit" name="show">Show All Data</a>
 	  <!--<a href="#about">Show Data</a>-->
 	  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
 	    <i class="fa fa-bars"></i>
