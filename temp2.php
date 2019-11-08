@@ -147,8 +147,10 @@
 		        		</div>
 		        	</form>
 		        	<form id="feature_detail_form">
-		        		<p class="text-muted">Click on the label to change it. Then Press Enter.</p>		        	
-		        		<div class="row">
+		        		<div class="row" id="formHead">
+		        			<p class="text-muted col-xs-6">Click on the label to change it. Then Press Enter.</p>
+		        		</div>
+		        		<!-- <div class="row">
 			        		<div class="form-group col-xs-6">
 			        			<div class="input-group">			        			
 				        			<label for="Flat Sheet"><a class="editable">Flat Sheet Dimension (Inches)</a></label>
@@ -205,17 +207,9 @@
 				        			<span class="input-group-btn"><button class="btn btn-danger remove_field" style="margin-top:25px;"><span class="glyphicon glyphicon-minus"></span></button></span>
 			        			</div>
 			        		</div>
-			        		<!-- <div class="form-group col-xs-6">
-			        			<label for="Notes" ><a class="editable" data-toggle="modal" data-target="#edit_modal">Notes</a></label><br>
-			        			<input name="notes" class="form-control newfields" type="text" id="notes" required>
-			        		</div>	 -->	
-							<!-- 
-			        		<div class="form-group col-xs-6">
-			        			<label for="box" ><a class="editable" data-toggle="modal" data-target="#edit_modal">Box</a></label><br>
-			        			<textarea name="box" class="form-control" id="box" required></textarea>
-			        		</div>	 -->
+			        		
 				        		
-		        		</div>
+		        		</div> -->
 		        		<div class="row" id="form_row">			        		
 				        	<!--Dynamic Fields-->
 		        		</div>
@@ -303,8 +297,6 @@
 				dataType: 'json',
 				success: function(data){
 					var tdHtml = '';
-					data.forEach(function (dataItem) {
-						var x = dataItem;
 
 
 						$.ajax({
@@ -318,9 +310,11 @@
 									}
 								}
 
-								console.log(featuresx);
 							}
 						});
+
+					data.forEach(function (dataItem) {
+						var x = dataItem;
 						
 						tdHtml += '<tr class="data-row">' +
 					        '<td>' + x.Product_Name + '</td>' +
@@ -351,19 +345,15 @@
 
 					        fea = x.feature_details;
 					        obj = JSON.parse(fea);
+					        console.log(obj);
 
 					        if(obj != null){
 					        	for (var key in obj) {
 								    if (obj.hasOwnProperty(key)) {
 								        tdHtml += '<td>' + obj[key] + '</td>';
-						        		console.log(obj[key])
 								    }
 								}					        	
-					        }else{
-					        	tdHtml += '<td></td>';
-					        }
-					       
-
+					        }					       
 
 					        /*for(var i = 0; i < featuresx.length; i++) {
 					        	tdHtml += '<td>'+featuresx[i]+'</td>';				        	
@@ -376,22 +366,44 @@
 				}
 			});
 
+			function displayColors(){
+				
+			}
+
 
 			$.ajax({
 				url: "getTableHeadings.php",
 				method: 'POST',
 				dataType: 'json',
-				success: function(data){				
-					var th = Object.keys(data);
+				success: function(data){									
 					//console.log(th);
-					console.log(data);
 
 					var headings = '';
-					for(var i = 0; i < th.length; i++){
-						headings += '<th>'+th[i]+'</th>';		
-					}				
+					
+					if(data){
+						for(var i = 0; i < data.length; i++){
+							headings += '<th>'+data[i]+'</th>';		
+						}				
 
-					$('#demo > thead > #table-row').append(headings);
+						$('#demo > thead > #table-row').append(headings);
+
+						for(var i =0; i < data.length; i++){
+							var inputs = '<div class="form-group col-xs-6">'
+							+'<label for="newfield"><a class="editable" data-toggle="modal" data-target="#edit_modal">'+data[i]+'</a></label>'					
+							+'<input type="text" class="form-control newfields" name="newfield[]"  />'						
+							+'</div>';
+
+							$("#form_row").append(
+								inputs
+							);
+						}			
+
+
+					}else{
+						console.log('No data');
+					}
+
+
 				}	
 			});
 
@@ -449,26 +461,23 @@
 						$('#features').val(data.features);
 						$('#myModal').modal('show');
 
-						$.ajax({
+						/*$.ajax({
 							url: "getformdata.php",
 							method: 'POST',
 							data: {id: id},
 							dataType: 'json',
 							success: function(data){
-								console.log(data);
-								console.log(Object.keys(data));
 								var arr = Object.keys(data);
-								/*$('#feature_detail_form label a').each(function() {									
+								$('#feature_detail_form label a').each(function() {									
 									for(var i = 0; i < data.length; i++){
 										$(this).text(arr[i]);										
 									}
-								});*/
+								});
 								$('#feature_detail_form label').each(function() {									
 									$(this).next().val(data[$(this).text()]);
 								});
-								$('#myModal').modal('show');
 							}
-						});
+						});*/
 					}
 				});
 
@@ -484,32 +493,59 @@
 					var polyester =  $('#polyester').val();
 					var standard =  $('#standard').val();
 					var notes =  $('#notes').val();*/
-					var dataToServer = {};
-					$('#feature_detail_form label').each(function() {
-						dataToServer[$(this).text()] = $(this).next().val();
+					var labels = [];
+					var inputs = [];
+					var count = 0;
+					$('#feature_detail_form label').each(function(count) {
+						labels.push($(this).text());
+						inputs.push($(this).next().val());						
+						count++;
 					});
 					//console.log(dataToServer);
 
-
+					/*var keys = Object.keys(dataToServer);
+					var vals = Object.values(dataToServer);*/
 
 					$.ajax({
-						url: "storeFeatures-test.php",
+						url: "getLabels.php",
 						method: 'POST',
 						data: {
-							"params": dataToServer,
+							"labels": labels,
 							"id": id 
 						},
 						dataType: 'json',						
 						success: function(data){
+							console.log(data);
 							console.log('Data Submitted');
 							/*for (var key in data) {
 							    if (data.hasOwnProperty(key)) {
 							        console.log(key + " -> " + data[key]);
 							    }					
-							}*/	
-							$('#myModal').modal('toggle'); 
+							}	*/
+				
 						}
 					});
+
+					$.ajax({
+						url: "getInputs.php",
+						method: 'POST',
+						data: {
+							"inputs": inputs,					
+							"id": id 
+						},
+						dataType: 'json',						
+						success: function(data){
+							console.log(data);
+							console.log('Data Submitted');
+							/*for (var key in data) {
+							    if (data.hasOwnProperty(key)) {
+							        console.log(key + " -> " + data[key]);
+							    }					
+							}*/
+				
+						}
+					});
+					$('#myModal').modal('toggle'); 
 				});
 
 			});

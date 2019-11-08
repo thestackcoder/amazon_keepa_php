@@ -26,7 +26,11 @@
 	$combine->okeo_standard = $standard;
 	$combine->notes = $notes;*/
 
-	$data = json_encode($_POST['params']);
+	$data = json_encode($_POST['labels']);
+	$data2 = json_encode($_POST['inputs']);
+
+	echo $data;
+	echo $data2;
 
 	//print_r(json_decode($data));
 
@@ -47,7 +51,7 @@
 
 	$obj = json_encode($combine);*/
 
-	$sql = "UPDATE csvdata SET feature_details = '".$data."' WHERE id = '".$id."'";
+/*	$sql = "UPDATE csvdata SET feature_details = '".$data."' WHERE id = '".$id."'";
 
 	if($conn->query($sql) === TRUE && isset($_POST['id'])){
 
@@ -58,7 +62,7 @@
 			echo json_encode($fd);
 	}else{
 		echo "Data not updated";
-	}
+	}*/
 
 	
 ?>

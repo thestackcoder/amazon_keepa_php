@@ -21,7 +21,7 @@
 		$sql = "SELECT feature_details FROM csvdata WHERE id = '".$_POST['id']."'";
 		$result = mysqli_query($conn, $sql);
 		$row = $result->fetch_assoc();
-		$fd = json_decode($row['feature_details'], true);
+		$fd = json_decode($row['feature_details']);
 		echo json_encode($fd);
 	}
 
