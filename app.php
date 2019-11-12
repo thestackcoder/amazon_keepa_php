@@ -518,7 +518,7 @@
 
 			var sp = asin.split(',');
 			console.log(sp);
-			var count = 22;
+			var count = 50;
 
 			if(asin){
 				alert("Fetching Data from API");				
@@ -562,7 +562,6 @@
 								pasins: pasins,
 								asins: asins,					   
 							}, function(response) {
-								//$('#message').show();
 								$('#alert').text(response);
 								location.reload();
 							});	
@@ -570,7 +569,7 @@
 						})
 						.catch((error) => {
 							console.log(error);
-							alert("Failed to load resources! Fetch again!");
+							alert("Failed to load some resources! Fetch again!");
 						});
 					}
 				}
