@@ -206,7 +206,6 @@
 	  </div>
 	</div>
 
-	
 
     <script>
   
@@ -251,12 +250,12 @@
 						headings = '';		
 						heads = data;
 
-						if(data){
-							for(var i = 0; i < data.length; i++){
-								headings += '<th>'+data[i]+'</th>';		
+						if(heads){
+							for(var i = 0; i < heads.length; i++){
+								headings += '<th>'+heads[i]+'</th>';		
 							}				
 
-							$('#demo > thead > #table-row').append(headings);
+							$('#demo > thead > #table-row > #featured').after(headings);
 
 							for(var i =0; i < data.length; i++){
 								var inputs = '<div class="form-group col-xs-6">'
@@ -268,7 +267,6 @@
 									inputs
 								);
 							}			
-
 
 						}else{
 							console.log('No data');
@@ -336,8 +334,8 @@
 
 					data.forEach(function (dataItem) {
 						var x = dataItem;
-						
-						tdHtml += '<tr class="data-row">' +
+
+						tdHtml += '<tr class="data-row" id="'+x.id+'">' +
 					        '<td>' + x.Product_Name + '</td>' +
 					        '<td>' + x.Brand + '</td>' +
 					        '<td>' + x.Price + '</td>' +
@@ -353,22 +351,33 @@
 					        '<td><a href="'+x.link+'">' + x.asin + '</a></td>' +
 					        '<td>' + x.coupon + '</td>' +
 					        '<td>' + x.size + '</td>' +
-					        '<td><a id="'+x.id+'" class="feature_class">' + x.features + '</a></td>'+
-					        '<td>' + x.color + '</td>';				
-
-					        tdHtml += displayColors(x.color, x.image);
-				       		
+					        '<td><a id="'+x.id+'" class="feature_class">' + x.features + '</a></td>';
 
 					        fea = x.feature_details;
-					        obj = JSON.parse(fea);
+					        arr = JSON.parse(fea);
 
-					        if(obj != null && headings != null){
-					        	for (var key in obj) {
-								    if (obj.hasOwnProperty(key)) {
-								        tdHtml += '<td>' + obj[key] + '</td>';
-								    }
-								}	
+					        if(arr != null){
+					        	if(arr.length == heads.length){
+					        		for(var i=0; i<arr.length; i++){
+									    tdHtml += '<td class="dynamo">' + arr[i] + '</td>';								    					        	
+						        	}
+					        	}else if(arr.length < heads.length){					        		
+									for(var i=0; i<heads.length; i++){
+										if(arr[i]){
+									    	tdHtml += '<td class="dynamo">' + arr[i] + '</td>';								    					   											
+										}else{
+									    	tdHtml += '<td></td>';					
+										}
+						        	}					        			
+					        	}					  					        	
+					        }else{
+					        	for(var j=0; j<heads.length; j++){
+					        		tdHtml += '<td></td>';
+					        	}
 					        }
+					        
+					        tdHtml += '<td>' + x.color + '</td>';								       		
+					        tdHtml += displayColors(x.color, x.image);					        
 
 					        /*for(var i = 0; i < featuresx.length; i++) {
 					        	tdHtml += '<td>'+featuresx[i]+'</td>';				        	
@@ -444,9 +453,15 @@
 			});
 
 
+			var id;
+
 			$(document).on('click', '.feature_class', function(){
 				$('#modal_msg').hide();
-				var id = $(this).attr('id');
+				$('#myModal').modal('show'); 			
+				
+				var row_id = $(this).attr('id');				
+				id = $(this).attr('id');
+
 				$.ajax({
 					url: "fetch.php",
 					method: 'POST',
@@ -454,14 +469,14 @@
 					dataType: 'json',
 					success: function(data){
 						$('#features').val(data.features);
-						$('#myModal').modal('show');
-
-						
+						// $('#myModal').modal('show');						
 					}
-				});
+				});				
+			});
 
-				
-				$(document).on('click', '#save', function(e){
+			//$('#myModal').modal('hide');
+
+			$(document).on('click', '#save', function(e){
 					e.preventDefault();
 				/*	var flat =  $('#flat_sheet').val();
 					var fitted =  $('#fitted_sheet').val();
@@ -472,18 +487,36 @@
 					var polyester =  $('#polyester').val();
 					var standard =  $('#standard').val();
 					var notes =  $('#notes').val();*/
+
 					var labels = [];
 					var inputs = [];
-					var count = 0;
+					//var count = 0;
 					$('#feature_detail_form label').each(function(count) {
 						labels.push($(this).text());
-						inputs.push($(this).next().val());						
-						count++;
+						inputs.push($(this).next().val());	
+					//	count++;
 					});
 					//console.log(dataToServer);
 
 					/*var keys = Object.keys(dataToServer);
 					var vals = Object.values(dataToServer);*/
+
+					var doc = document.getElementById(id);
+					var notes = [];
+					for (var i = 0; i < doc.childNodes.length; i++) {
+					    if (doc.childNodes[i].className == "dynamo") {
+					      notes.push(doc.childNodes[i]);
+					    }        
+					}
+					
+					notes.forEach(function(element, index){
+						element.innerText = inputs[index];
+					});
+
+					/*labels.forEach(function(i){
+						var i = document.getElementById();
+						console.log(i);
+					});	*/
 
 					$.ajax({
 						url: "getLabels.php",
@@ -525,10 +558,10 @@
 				
 						}
 					});
-					$('#myModal').modal('toggle'); 
+
+					$('#myModal').modal('hide');					
 				});
 
-			});
 			
 		});
 

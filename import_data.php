@@ -3,10 +3,10 @@
 include 'connection.php';
 //import.php
 
-if(!empty($_FILES['file']['name']))
-	{
-	 $file_data = fopen($_FILES['file']['name'], 'r');
-	 fgetcsv($file_data);
+if(!empty($_FILES['file']['tmp_name']))
+{
+	$file_data = fopen($_FILES['file']['tmp_name'], 'r');
+	fgetcsv($file_data);
 	 while($row = fgetcsv($file_data, 10000, ","))
 	 {
 		  $data[] = array(
@@ -26,7 +26,6 @@ if(!empty($_FILES['file']['name']))
 		   'category'  => $row[13],
 		   'asin'  => $row[14],
 		   'link'  => $row[15],
-
 		  );
 	 }
 
