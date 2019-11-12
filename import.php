@@ -42,7 +42,7 @@ if (isset($_POST["import"])) {
                 $message = "CSV Data Imported into the Database";
             } else {
                 $type = "error";
-                $message = "Problem in Importing CSV Data";
+                $message = "All the ASINS are already in DB";
             }
 
         }
