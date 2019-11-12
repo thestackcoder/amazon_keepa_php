@@ -98,7 +98,6 @@ tr:nth-child(even) {
 .form-horizontal #import-btn{
   float: right;
   width: 15%;
-  margin: 10px auto;
 }
 
 .form-horizontal #import-btn button{

@@ -7,7 +7,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>CSV To MYSQL</title>
+	<title>Amazon Products Detailer</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
@@ -35,35 +35,34 @@
 	  <a style="cursor: pointer;" type="submit" class="active" name="show">Show All Data</a>
 	  <a id="call_api" onclick = "sendData()" style="float:right; cursor: pointer;" type="submit" class="active" name="show">Fetch Products</a>
 
-	  <!--<a href="#about">Show Data</a>-->
 	  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
 	    <i class="fa fa-bars"></i>
 	  </a>
 	</div>
 
 	<div class="main">
-		<div id="message" class="alert alert-info alert-dismissible" role="alert">
+		<!-- <div id="message" class="alert alert-info alert-dismissible" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<strong id="alert"></strong>
-		</div>
+		</div> -->
 
-		<?php
-			$colors = array();
+	<?php
+		$colors = array();
 
-			$sql = "SELECT color FROM `csvdata` group by color";
+		$sql = "SELECT color FROM `csvdata` group by color";
 
-			$result = mysqli_query($conn, $sql);
-			if ($result->num_rows > 0) {
-				// output data of each row
-				while($row = $result->fetch_assoc()) {
-				    $colors[] = $row['color'];
-				}
-			} else {
-				echo '<script>console.log("0 results");</script>';
+		$result = mysqli_query($conn, $sql);
+		if ($result->num_rows > 0) {
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				$colors[] = $row['color'];
 			}
+		} else {
+			echo '<script>console.log("0 results");</script>';
+		}
 
-				
-		?>
+			
+	?>
 
 		<h2>All Data from DB</h2>
 		
@@ -207,26 +206,26 @@
 	</div>
 
 
-    <script>
+    <script type="text/javascript">
   
 		$(document).ready(function(){
-
-			$('#message').hide();
-
+			//GLOBAL Variables
 			var colors = [];
 			var headings = '';
 			var heads = [];
 			var fea;
 			var obj;
+			var id;
 
+			//Search Field
 			$("#search").on("keyup", function() {
 			    var value = $(this).val().toLowerCase();
 			    $("#table-body tr").filter(function() {
 			      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-			    });
-			  });
+			   });
+			});
 
-
+			//Get All Distinct Colors
 			$.ajax({
 				url: "getColors.php",
 				method: 'GET',
@@ -241,46 +240,46 @@
 			});
 
 
-			/**/
+			// Table Headings (Feature Details)
 			$.ajax({
-					url: "getTableHeadings.php",
-					method: 'POST',
-					dataType: 'json',
-					success: function(data){									
-						headings = '';		
-						heads = data;
+				url: "getTableHeadings.php",
+				method: 'POST',
+				dataType: 'json',
+				success: function(data){									
+					headings = '';		
+					heads = data;
 
-						if(heads){
-							for(var i = 0; i < heads.length; i++){
-								headings += '<th>'+heads[i]+'</th>';		
-							}				
+					if(heads){
+						for(var i = 0; i < heads.length; i++){
+							headings += '<th>'+heads[i]+'</th>';		
+						}				
 
-							$('#demo > thead > #table-row > #featured').after(headings);
+						$('#demo > thead > #table-row > #featured').after(headings);
 
-							for(var i =0; i < data.length; i++){
-								var inputs = '<div class="form-group col-xs-6">'
-								+'<label for="newfield"><a class="editable" data-toggle="modal" data-target="#edit_modal">'+data[i]+'</a></label>'					
-								+'<input type="text" class="form-control newfields" name="newfield[]" />'						
-								+'</div>';
+						for(var i =0; i < data.length; i++){
+							var inputs = '<div class="form-group col-xs-6">'
+							+'<label for="newfield"><a class="editable" data-toggle="modal" data-target="#edit_modal">'+data[i]+'</a></label>'					
+							+'<input type="text" class="form-control newfields" name="newfield[]" />'						
+							+'</div>';
 
-								$("#form_row").append(
-									inputs
-								);
-							}			
+							$("#form_row").append(
+								inputs
+							);
+						}			
 
-						}else{
-							console.log('No data');
-						}
+					}else{
+						console.log('No data');
+					}
+				}	
+			});			
+			
 
+			// Feature Form
+			$(document).on('click', '.feature_class', function(){				
+				$('#modal_msg').hide();
+				$('#myModal').modal('show'); 
 
-					}	
-				});
-
-			/**/
-
-
-			$(document).on('click', '.feature_class', function(){
-				var id = $(this).attr('id');
+				id = $(this).attr('id');
 				$.ajax({
 					url: "getInputValues.php",
 					method: 'POST',
@@ -303,34 +302,28 @@
 																							
 					}
 				});
+			
+				// GET features in input
+				$.ajax({
+					url: "fetch_feature.php",
+					method: 'POST',
+					data: {id: id},
+					dataType: 'json',
+					success: function(data){
+						$('#features').val(data.features);
+					}
+				});	
+
 			});
 
-		
 
-			var featuresx = [];
-
-
+			// Rendering Table
 			$.ajax({
-				url: "gettabledata.php",
+				url: "getTableData.php",
 				method: 'GET',
 				dataType: 'json',
 				success: function(data){
 					var tdHtml = '';
-
-
-						$.ajax({
-							url: "getTableHeadings.php",
-							method: 'POST',
-							dataType: 'json',
-							success: function(data){	
-								for (var x in data){
-									if (data.hasOwnProperty(x)){
-										featuresx.push(data[x]);
-									}
-								}
-
-							}
-						});
 
 					data.forEach(function (dataItem) {
 						var x = dataItem;
@@ -366,22 +359,18 @@
 										if(arr[i]){
 									    	tdHtml += '<td class="dynamo">' + arr[i] + '</td>';								    					   											
 										}else{
-									    	tdHtml += '<td></td>';					
+									    	tdHtml += '<td class="dynamo"></td>';					
 										}
 						        	}					        			
 					        	}					  					        	
 					        }else{
 					        	for(var j=0; j<heads.length; j++){
-					        		tdHtml += '<td></td>';
+					        		tdHtml += '<td class="dynamo"></td>';
 					        	}
 					        }
 					        
 					        tdHtml += '<td>' + x.color + '</td>';								       		
-					        tdHtml += displayColors(x.color, x.image);					        
-
-					        /*for(var i = 0; i < featuresx.length; i++) {
-					        	tdHtml += '<td>'+featuresx[i]+'</td>';				        	
-					        }	*/			        
+					        tdHtml += displayColors(x.color, x.image);					        		        
 
 					    tdHtml += '</tr>';
 
@@ -396,7 +385,7 @@
 			});
 			
 
-
+			// Display Pictures in Table
 			function displayColors(color, image){
 				var cohtml = '';
 				 for(var i = 0; i < colors.length; i++) {
@@ -411,7 +400,7 @@
 			}
 			
 
-			// Add field function
+			// Add and Remove New Field
 			$(document).on('click', '#add_btn', function(e){
 				e.preventDefault();
 				var inputs = '<div class="form-group col-xs-6">'
@@ -452,54 +441,20 @@
 
 			});
 
-
-			var id;
-
-			$(document).on('click', '.feature_class', function(){
-				$('#modal_msg').hide();
-				$('#myModal').modal('show'); 			
-				
-				var row_id = $(this).attr('id');				
-				id = $(this).attr('id');
-
-				$.ajax({
-					url: "fetch.php",
-					method: 'POST',
-					data: {id: id},
-					dataType: 'json',
-					success: function(data){
-						$('#features').val(data.features);
-						// $('#myModal').modal('show');						
-					}
-				});				
-			});
-
-			//$('#myModal').modal('hide');
+			// Save the Feature Form data to Database
+			// And Disply in Table
 
 			$(document).on('click', '#save', function(e){
 					e.preventDefault();
-				/*	var flat =  $('#flat_sheet').val();
-					var fitted =  $('#fitted_sheet').val();
-					var actual =  $('#pocket_actual').val();
-					var fit =  $('#pocket_fits').val();
-					var pillow =  $('#pillow_case').val();
-					var elastic =  $('#elastic_sheet').val();
-					var polyester =  $('#polyester').val();
-					var standard =  $('#standard').val();
-					var notes =  $('#notes').val();*/
-
+				
 					var labels = [];
 					var inputs = [];
-					//var count = 0;
+
 					$('#feature_detail_form label').each(function(count) {
 						labels.push($(this).text());
 						inputs.push($(this).next().val());	
-					//	count++;
 					});
-					//console.log(dataToServer);
 
-					/*var keys = Object.keys(dataToServer);
-					var vals = Object.values(dataToServer);*/
 
 					var doc = document.getElementById(id);
 					var notes = [];
@@ -508,15 +463,10 @@
 					      notes.push(doc.childNodes[i]);
 					    }        
 					}
-					
+
 					notes.forEach(function(element, index){
 						element.innerText = inputs[index];
 					});
-
-					/*labels.forEach(function(i){
-						var i = document.getElementById();
-						console.log(i);
-					});	*/
 
 					$.ajax({
 						url: "getLabels.php",
@@ -527,15 +477,7 @@
 						},
 						dataType: 'json',						
 						success: function(data){
-							//console.log('Data Submitted');
 							$('#message').text('Data updated Successfully!');
-							$('message').show();
-							/*for (var key in data) {
-							    if (data.hasOwnProperty(key)) {
-							        console.log(key + " -> " + data[key]);
-							    }					
-							}	*/
-				
 						}
 					});
 
@@ -548,29 +490,15 @@
 						},
 						dataType: 'json',						
 						success: function(data){
-							//console.log('Data Submitted');
-							$('#message').text('Data updated Successfully!');
-							/*for (var key in data) {
-							    if (data.hasOwnProperty(key)) {
-							        console.log(key + " -> " + data[key]);
-							    }					
-							}*/
-				
+							$('#message').text('Data updated Successfully!');							
 						}
 					});
 
 					$('#myModal').modal('hide');					
 				});
-
 			
 		});
 
-		
-
-
-		function getImg(data, type, full, meta) {
-	        return '<img src="'+data+'" width="100" />';
-	    }
 
 		function myFunction() {
 		  var x = document.getElementById("myTopnav");
@@ -581,6 +509,8 @@
 		  }
 		}
 
+
+		// API Section, fetching data from api
 
 		function sendData(){
 			var asin = "<?php echo $res ?>";
@@ -600,48 +530,48 @@
 
 				    if(str){
 						fetch('https://api.keepa.com/product?key=9b9vdvv8l59t9ccc4a9l8ncajn9bm3ag2ae7h0fogsf9i3ihbpigsa6jrpcme4tb&domain=1&asin='+str)
-							.then(res => res.json())
-							.then(function(data){
-								//console.log(data);
-								var cp = [];
-								var sz = [];
-								var fe = [];
-								var co = [];
-								var img = [];
-								var pasins = [];
-								var asins = [];
+						.then(res => res.json())
+						.then(function(data){
+							//console.log(data);
+							var cp = [];
+							var sz = [];
+							var fe = [];
+							var co = [];
+							var img = [];
+							var pasins = [];
+							var asins = [];
 
-								for (var i = 0; i < data.products.length; i++) {
-									//console.log(data.products[i]);
+							for (var i = 0; i < data.products.length; i++) {
+								//console.log(data.products[i]);
 
-									asins.push(data.products[i].asin);
-									pasins.push(data.products[i].parentAsin);						
-									cp.push(data.products[i].coupon);
-									sz.push(data.products[i].size);
-									fe.push(data.products[i].features);
-									co.push(data.products[i].color);
-									img.push(data.products[i].imagesCSV);						
-								}		
+								asins.push(data.products[i].asin);
+								pasins.push(data.products[i].parentAsin);						
+								cp.push(data.products[i].coupon);
+								sz.push(data.products[i].size);
+								fe.push(data.products[i].features);
+								co.push(data.products[i].color);
+								img.push(data.products[i].imagesCSV);						
+							}		
 
-								$.post('testapi.php', {
-									coupons: cp,
-								    sizes: sz,
-								    features: fe,
-								    colors: co,
-								    images: img,
-								    pasins: pasins,
-								    asins: asins,					   
-								}, function(response) {
-			    					//$('#message').show();
-								    $('#alert').text(response);
-								    location.reload();
-								});	
-									
-							})
-							.catch((error) => {
-								console.log(error);
-								alert("Failed to load resources! Fetch again!");
-							});
+							$.post('storeData.php', {
+								coupons: cp,
+								sizes: sz,
+								features: fe,
+								colors: co,
+								images: img,
+								pasins: pasins,
+								asins: asins,					   
+							}, function(response) {
+								//$('#message').show();
+								$('#alert').text(response);
+								location.reload();
+							});	
+								
+						})
+						.catch((error) => {
+							console.log(error);
+							alert("Failed to load resources! Fetch again!");
+						});
 					}
 				}
 			}else{

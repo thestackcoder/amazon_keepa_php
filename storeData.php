@@ -35,22 +35,13 @@
 		if (sizeof($asins) > 0) {
 			# code...
 			for ($i=0; $i < sizeof($asins); $i++) { 
-				# code...
-				//echo $asins[$i];
-				//echo $coupons[$i];
-				//echo '<br>';
-				//echo $sizes[$i];
-				//echo '<br>';	
+			
 				$comma_separated = implode(",", $features[$i]);														
 				$final_features = mysqli_real_escape_string($conn, $comma_separated);
-				//print_r($features[$i]);
-				/*echo $colors[$i];
-				echo '<br>';*/	
+			
 				$imgx = $images[$i];
 				$img = explode(",", $imgx);
-				/*echo $imgx;
-				echo '<br>';	
-				echo '<br>';*/	
+			
 
 				$query = "UPDATE csvdata SET parent_asin='".$pasins[$i]."', coupon='".$coupons[$i]."', size='".$sizes[$i]."', features='".$final_features.error_reporting(E_ERROR | E_PARSE)."', 
 					color='".$colors[$i]."', image='".$imgurl.$img[0]."' WHERE asin = '".$asins[$i]."'";

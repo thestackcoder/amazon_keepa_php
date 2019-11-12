@@ -7,7 +7,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>CSV To MYSQL</title>
+	<title>Amazon Products Detailer</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
@@ -26,8 +26,7 @@
 
 	<div class="topnav" id="myTopnav">
 	  <a href="#home" class="active">Home</a>
-	  <a href="temp2.php" type="submit" name="show">Show All Data</a>
-	  <!--<a href="#about">Show Data</a>-->
+	  <a href="app.php" type="submit" name="show">Show All Data</a>
 	  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
 	    <i class="fa fa-bars"></i>
 	  </a>
@@ -43,12 +42,13 @@
 		    <div class="form-group">
 		        <button id="upload_data" name="upload"
 		            class="btn-submit btn btn-default">Upload</button>
-		    </div>	  <br>
-		    <span id="refresh" style="color: silver; display:none;" class="pull-left">Refresh to Upload New File</span>		        		    
-		</div>
-	    <div id="import-btn" class="form-group">
-	    	<button type="submit" id="import" name="import"
+			</div>			
+			<div id="import-btn" class="form-group">
+	    		<button type="submit" id="import" name="import"
 	            class="btn-submit">Import</button>
+			</div>
+			<br>
+			<span id="refresh" style="color: silver; display:none;" class="pull-left">Refresh to Upload New File</span>		        		    	
 		</div>
 		
 	    <div id="labelError"></div>
@@ -57,16 +57,6 @@
 
    <div id="csv_file_data"></div>
 
-	<!-- <form id="import_csv" class="form-horizontal form-inline" method="post" name="importCSV"
-    enctype="multipart/form-data" action="import.php">
-    	<div class="form-group">
-	        <input type="file" name="file" id="file-x" accept=".csv">
-	    </div>
-		<div class="form-group">
-	        <button type="submit" id="submit" name="import"
-	            class="btn-submit">Import</button>
-	    </div>
-	</form> -->
 	<div class="main">
 		<h3><b>Data from CSV File:</b></h3><hr>
 		<div class="table-responsive">
@@ -138,7 +128,6 @@
 						    });				 				  
 				   }				   
 				});
-			 	//console.log('wow');			 					   				
 			});	
 
 		});
